@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BookMarker</title>
+
+    <link rel="icon" href="bookmark-Icon.png">
+
+    <!-- =========== Bootstrap =========== -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <!-- =========== Google Fonts =========== -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Righteous&display=swap" rel="stylesheet">
+    <!-- =========== Font Awesome =========== -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css"
+        integrity="sha512-5Hs3dF2AEPkpNAR7UiOHba+lRSJNeM2ECkwxUIxC1Q/FLycGTbNapWXB4tP889k5T5Ju8fs4b1P5z/iB4nMfSQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <!-- =========== My Css Styles =========== -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+
+    <header>
+        <div class="container">
+            <div class="content mt-5 py-5">
+                <h1 class="position-relative mx-auto">Bookmarker</h1>
+            </div>
+        </div>
+    </header>
+
+    <section class="main">
+        <div class="container">
+            <div class="content py-5">
+
+                <div class="form-inputs">
+                    <h2 class="text-center fs-4 fw-bold mx-auto">
+                        <i class="fa-solid fa-bookmark"></i>
+                        Bookmark your favorite sites
+                        <i class="fa-solid fa-bookmark"></i>
+                    </h2>
+
+                    <div class="mb-3">
+                        <label for="bookmarkName" class="form-label fw-bold">Site Name <i
+                                class="fa-solid fa-book-bookmark"></i></label>
+                        <input oninput="validationInput(this);" type="text" class="form-control" id="bookmarkName"
+                            placeholder="Bookmark Name :">
+                        <div class="d-none alert alert-danger py-1 mt-2" role="alert">
+                            The Bookmark name must start with a capital letter (A-Z) followed by 2 to 15 lowercase
+                            letters (a-z).
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="bookmarkUrl" class="form-label fw-bold">Site URL <i
+                                class="fa-solid fa-link"></i></label>
+                        <input oninput="validationInput(this);" type="text" class="form-control" id="bookmarkUrl"
+                            placeholder="Website URL :">
+                        <div class="d-none alert alert-danger py-1 mt-2" role="alert">
+                            The URL must follow the format: 'www.domain.com', where 'domain' is 3 to 15 lowercase
+                            letters (a-z).
+                        </div>
+                    </div>
+
+                    <button onclick="addBookMark();" class="btn btn-primary px-5 mx-auto d-block mb-4">Submit</button>
+
+                </div>
+
+                <div class="mt-4">
+
+                    <table class="table text-center">
+                        <thead>
+                            <tr>
+                                <th>Index</th>
+                                <th>Website Name</th>
+                                <th>Visit</th>
+                                <th>Delete</th>
+                            </tr>
+                        </thead>
+                        <tbody id="bookMarks">
+
+
+                        </tbody>
+                    </table>
+                    <button onclick="showWarning();" class="btn btn-outline-danger">Remove All Bookmarks <i
+                            class="fa-solid fa-trash-can"></i></button>
+                </div>
+            </div>
+        </div>
+
+        <div class="d-none window-alert w-100 vh-100 position-absolute top-0 z-3" id="alert">
+            <div class="alert-head">
+                <button onclick="hideAlert();" class="btn text-black fs-1 position-absolute end-0"><i
+                        class="fa-solid fa-x"></i></button>
+            </div>
+            <div class="alert-body d-flex justify-content-center align-items-center w-100 vh-100">
+                <div class="container p-5 rounded-3">
+                    <h3 class="fs-5 mb-5">Site Name or Url is not valid, Please follow the rules below :</h3>
+                    <div class="flex-wrap row-gap-4 d-flex align-items-center">
+                        <i class="fa-regular fa-circle-right col-1 text-danger"></i>
+                        <p class="col-11 m-0"> The Bookmark name must start with a capital letter (A-Z) followed by 2 to
+                            15 lowercase
+                            letters (a-z).</p>
+                        <i class="fa-regular fa-circle-right col-1 text-danger"></i>
+                        <p class="col-11 m-0"> The URL must follow the format: 'www.domain.com', where 'domain' is 3 to
+                            15 lowercase
+                            letters (a-z)..</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="d-none window-alert w-100 vh-100 position-absolute top-0 z-3" id="warning">
+            <div class="alert-head">
+                <button onclick="hideWarning();" class="btn text-black fs-1 position-absolute end-0"><i
+                        class="fa-solid fa-x"></i></button>
+            </div>
+            <div class="alert-body d-flex justify-content-center align-items-center w-100 vh-100">
+                <div class="container p-5 rounded-3">
+                    <i class="fa-solid fa-triangle-exclamation text-warning mb-4 text-center d-block warnning-icon"></i>
+                    <h3 class=" fs-5 mb-5"><span>Warning :</span>  All Bookmarks will be deleted. <br> Are you sure you want to delete all bookmarks?
+                    </h3>
+                    <div class="d-flex justify-content-around">
+                        <button onclick="clearData();" class="btn btn-success w-25">Delete</button>
+                        <button onclick="hideWarning();" class="btn btn-danger w-25">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+    </section>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+        crossorigin="anonymous"></script>
+
+    <script src="main.js"></script>
+</body>
+
+</html>
